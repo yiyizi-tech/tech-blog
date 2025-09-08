@@ -21,7 +21,8 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "首页" },
     { href: "/about", label: "关于我" },
-    { href: "/contact", label: "联系方式" }
+    { href: "/contact", label: "联系方式" },
+    { href: "/posts", label: "文章" }
   ];
 
   return (
