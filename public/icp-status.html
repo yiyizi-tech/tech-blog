@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>备案同步中 - yiyizi.top</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .steps {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .contact {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .timer {
+            font-size: 1.2em;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status">⏳</div>
+        <h1>备案信息同步中</h1>
+        <p>您的网站已成功部署，备案也已通过，正在等待阿里云系统同步。</p>
+        
+        <div class="info">
+            <h3>📋 当前状态</h3>
+            <ul>
+                <li>✅ 网站技术配置：正常</li>
+                <li>✅ SSL证书：有效</li>
+                <li>✅ 服务器运行：正常</li>
+                <li>✅ 备案状态：已通过</li>
+                <li>⏳ 备案同步：进行中</li>
+            </ul>
+        </div>
+        
+        <div class="steps">
+            <h3>🔧 解决方案</h3>
+            <p><strong>方法1：等待同步（推荐）</strong></p>
+            <p>备案信息同步通常需要24-48小时，请耐心等待。</p>
+            
+            <p><strong>方法2：检查备案状态</strong></p>
+            <p>登录阿里云控制台 → ICP备案管理 → 确认备案状态为"已通过"</p>
+            
+            <p><strong>方法3：联系客服</strong></p>
+            <p>如果超过24小时仍无法访问，请联系阿里云客服要求手动同步。</p>
+        </div>
+        
+        <div class="contact">
+            <h3>📞 联系方式</h3>
+            <p><strong>阿里云备案客服：</strong>95187</p>
+            <p><strong>工单系统：</strong>登录阿里云控制台提交工单</p>
+            <p><strong>备案查询：</strong>工业和信息化部备案管理系统</p>
+        </div>
+        
+        <div class="timer">
+            <p>页面更新时间：<span id="time"></span></p>
+        </div>
+        
+        <button onclick="checkStatus()" style="background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-size: 16px; margin: 10px;">
+            刷新状态
+        </button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+        
+        function checkStatus() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>正在检查备案状态...</p>';
+            
+            // 尝试访问主站
+            fetch('https://yiyizi.top', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        resultDiv.innerHTML = '<p style="color: #4CAF50;">✅ 恭喜！备案已同步，网站现在可以正常访问了！</p>';
+                        setTimeout(() => {
+                            window.location.href = 'https://yiyizi.top';
+                        }, 2000);
+                    } else {
+                        resultDiv.innerHTML = '<p style="color: #ff9800;">⏳ 备案仍在同步中，请继续等待...</p>';
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = '<p style="color: #f44336;">❌ 备案同步中，请稍后再试</p>';
+                });
+        }
+        
+        // 每5分钟自动检查一次
+        setInterval(checkStatus, 300000);
+    </script>
+</body>
+</html>

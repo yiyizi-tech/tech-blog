@@ -1,0 +1,699 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --muted: #f6f6f6;
+  --muted-foreground: #737373;
+  --accent: #f6f6f6;
+  --accent-foreground: #171717;
+  --border: #e5e5e5;
+  --ring: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* prose plugin styles for article content */
+.prose {
+  color: var(--foreground);
+  max-width: none;
+}
+
+.prose h1 {
+  color: var(--foreground);
+  font-weight: 700;
+  font-size: 2.25em;
+  margin-top: 0;
+  margin-bottom: 0.8888889em;
+}
+
+.prose h2 {
+  color: var(--foreground);
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose h3 {
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 1.25em;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose ul, .prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose a {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  color: #2563eb;
+}
+
+.prose code {
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.875em;
+  background-color: var(--muted);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
+}
+
+.prose pre {
+  background-color: var(--muted);
+  overflow-x: auto;
+  font-weight: 400;
+  color: var(--foreground);
+  font-size: 0.875em;
+  line-height: 1.7142857;
+  margin-top: 1.7142857em;
+  margin-bottom: 1.7142857em;
+  border-radius: 0.375rem;
+  padding: 0.8571429em 1.1428571em;
+}
+
+.prose pre code {
+  background-color: transparent;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  font-weight: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.prose blockquote {
+  font-weight: 500;
+  font-style: italic;
+  color: var(--muted-foreground);
+  border-left-width: 0.25rem;
+  border-left-color: var(--border);
+  quotes: "\\201C""\\201D""\\2018""\\2019";
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  padding-left: 1em;
+}
+
+.prose strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.prose hr {
+  border-color: var(--border);
+  border-top-width: 1px;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.prose table {
+  width: 100%;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.875em;
+  line-height: 1.7142857;
+}
+
+.prose thead {
+  border-bottom-width: 1px;
+  border-bottom-color: var(--border);
+}
+
+.prose th {
+  color: var(--foreground);
+  font-weight: 600;
+  vertical-align: bottom;
+  padding-right: 0.5714286em;
+  padding-bottom: 0.5714286em;
+  padding-left: 0.5714286em;
+}
+
+.prose td {
+  vertical-align: baseline;
+  padding: 0.5714286em;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .prose {
+    color: var(--foreground);
+  }
+  
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6,
+  .prose strong {
+    color: var(--foreground);
+  }
+  
+  .prose code {
+    color: var(--foreground);
+    background-color: var(--muted);
+  }
+  
+  .prose pre {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
+  
+  .prose pre code {
+    background-color: transparent;
+    color: var(--foreground);
+  }
+  
+  .prose blockquote {
+    color: var(--muted-foreground);
+  }
+}
+
+/* 编辑器专用样式 */
+.editor-container {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.editor-content {
+  min-height: 500px;
+}
+
+/* 编辑器工具栏按钮样式 */
+.editor-container button {
+  transition: all 0.2s ease;
+}
+
+.editor-container button:hover {
+  transform: translateY(-1px);
+}
+
+.editor-container button:active {
+  transform: translateY(0);
+}
+
+/* 编辑器内容滚动条样式 */
+.ProseMirror::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ProseMirror::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.ProseMirror::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.ProseMirror::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 代码块语言标签 */
+.pre-language {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+/* 表格工具栏 */
+.table-controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-controls button {
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  color: #e5e7eb;
+  font-size: 0.75rem;
+}
+
+.table-controls button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 链接编辑弹窗 */
+.link-popup {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.link-popup input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  color: white;
+  width: 300px;
+}
+
+.link-popup input::placeholder {
+  color: #9ca3af;
+}
+
+/* 图片上传区域 */
+.image-drop-zone {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+}
+
+.image-drop-zone.dragover {
+  border-color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  color: #60a5fa;
+}
+
+/* 编辑器状态提示 */
+.editor-status {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #9ca3af;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* 全屏编辑模式 */
+.editor-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-fullscreen .editor-container {
+  flex: 1;
+  border-radius: 0;
+  border: none;
+}
+
+.editor-fullscreen .editor-content {
+  min-height: calc(100vh - 200px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .editor-container {
+    border-radius: 0.5rem;
+  }
+  
+  .editor-content {
+    min-height: 400px;
+  }
+  
+  .ProseMirror {
+    font-size: 14px;
+    padding: 0.75rem;
+  }
+  
+  .editor-container button {
+    padding: 0.5rem;
+  }
+  
+  .link-popup input {
+    width: 250px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --card: #0a0a0a;
+    --card-foreground: #ededed;
+    --muted: #262626;
+    --muted-foreground: #a3a3a3;
+    --accent: #262626;
+    --accent-foreground: #ededed;
+    --border: #262626;
+    --ring: #d4d4d8;
+  }
+}
+
+/* Force dark mode for blog */
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #000000;
+  --card-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #a0a0a0;
+  --accent: #1a1a1a;
+  --accent-foreground: #ffffff;
+  --border: #333333;
+  --ring: #60a5fa;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Code block styling */
+pre {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.875em;
+  line-height: 1.6;
+  position: relative;
+}
+
+pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, #161b22 0%, transparent 100%);
+  border-radius: 0.5rem 0.5rem 0 0;
+  pointer-events: none;
+}
+
+code {
+  background: #1a1a1a;
+  color: #e6edf3;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.875em;
+  border: 1px solid #30363d;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: #e6edf3;
+  font-size: 0.875em;
+  line-height: 1.6;
+}
+
+/* Syntax highlighting colors */
+.prose pre {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose pre code {
+  background: none;
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+.prose code {
+  background: #1a1a1a;
+  color: #58a6ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #30363d;
+  font-size: 0.875em;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Typography improvements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin-top: 2rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+  margin-top: 1.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+/* Blog post styling */
+.prose {
+  max-width: none;
+  color: #e6edf3;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.prose h2 {
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+  color: #c9d1d9;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.prose li {
+  margin-bottom: 0.75rem;
+  color: #c9d1d9;
+}
+
+.prose li::marker {
+  color: #8b949e;
+}
+
+.prose a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.prose a:hover {
+  color: #79c0ff;
+  border-bottom-color: #79c0ff;
+}
+
+.prose code {
+  background: #1a1a1a;
+  color: #58a6ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #30363d;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose pre {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.prose pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, #161b22 0%, transparent 100%);
+  border-radius: 0.5rem 0.5rem 0 0;
+  pointer-events: none;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: #e6edf3;
+  font-size: 0.875em;
+  line-height: 1.6;
+}
+
+.prose blockquote {
+  border-left: 4px solid #30363d;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #8b949e;
+  background: rgba(48, 54, 61, 0.2);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 1rem 1.5rem;
+}
+
+.prose strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.prose em {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.prose hr {
+  border-color: #30363d;
+  border-top-width: 1px;
+  margin: 3rem 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 1px solid #30363d;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.prose th {
+  background: #161b22;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #30363d;
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #30363d;
+  color: #c9d1d9;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
