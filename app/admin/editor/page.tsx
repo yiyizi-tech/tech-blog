@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Editor from '../../../components/Editor';
 
 interface ArticleData {
@@ -94,149 +93,137 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* 顶部导航 */}
-      <nav className="bg-black/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <Link 
-                href="/" 
-                className="text-gray-400 hover:text-white transition-colors flex items-center"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                返回首页
-              </Link>
-              <h1 className="text-xl font-semibold">文章编辑器</h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => {
-                  if (confirm('确定要清空所有内容吗？')) {
-                    setArticle({
-                      title: '',
-                      content: '',
-                      tags: [],
-                      excerpt: '',
-                    });
-                  }
-                }}
-                className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
-              >
-                清空
-              </button>
-              <button
-                onClick={handlePublish}
-                disabled={isPublishing || !article.title.trim() || !article.content.trim()}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
-              >
-                {isPublishing ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    发布中...
-                  </>
-                ) : (
-                  '发布文章'
-                )}
-              </button>
-            </div>
+    <div className="py-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">文章编辑器</h1>
+        <p className="mt-1 text-gray-400">创建和编辑您的博客文章</p>
+      </div>
+
+      <div className="bg-gray-800 rounded-lg shadow">
+        <div className="px-4 py-5 sm:px-6 border-b border-gray-700 flex justify-between items-center">
+          <h2 className="text-lg font-medium text-white">编辑文章</h2>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => {
+                if (confirm('确定要清空所有内容吗？')) {
+                  setArticle({
+                    title: '',
+                    content: '',
+                    tags: [],
+                    excerpt: '',
+                  });
+                }
+              }}
+              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+            >
+              清空
+            </button>
+            <button
+              onClick={handlePublish}
+              disabled={isPublishing || !article.title.trim() || !article.content.trim()}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+            >
+              {isPublishing ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  发布中...
+                </>
+              ) : (
+                '发布文章'
+              )}
+            </button>
           </div>
         </div>
-      </nav>
 
-      {/* 编辑器主体 */}
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        <div className="space-y-6">
-          {/* 文章标题 */}
-          <div>
-            <input
-              type="text"
-              value={article.title}
-              onChange={(e) => setArticle(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="输入文章标题..."
-              className="w-full text-3xl font-bold bg-transparent border-none outline-none placeholder-gray-500 text-white focus:ring-0"
-            />
-            <div className="h-px bg-gray-800 mt-2"></div>
-          </div>
-
-          {/* 标签输入 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
-              标签（按 Enter 添加）
-            </label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {article.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center px-3 py-1 bg-blue-600/20 text-blue-400 text-sm rounded-full border border-blue-600/30"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="ml-2 text-blue-400 hover:text-blue-300"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-            <input
-              type="text"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleAddTag}
-              placeholder="添加标签..."
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* 编辑器 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
-              文章内容
-            </label>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-              <Editor
-                content={article.content}
-                onChange={handleContentChange}
-                placeholder="开始写作你的文章..."
+        <div className="p-6">
+          <div className="space-y-6">
+            {/* 文章标题 */}
+            <div>
+              <input
+                type="text"
+                value={article.title}
+                onChange={(e) => setArticle(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="输入文章标题..."
+                className="w-full text-2xl font-bold bg-transparent border-b border-gray-700 outline-none placeholder-gray-500 text-white focus:border-blue-500 pb-2"
               />
             </div>
-          </div>
 
-          {/* 文章信息预览 */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-            <h3 className="text-lg font-semibold text-white mb-4">文章信息</h3>
-            <div className="space-y-3 text-sm">
-              <div>
-                <span className="text-gray-400">标题：</span>
-                <span className="text-white ml-2">{article.title || '未填写'}</span>
+            {/* 标签输入 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                标签（按 Enter 添加）
+              </label>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {article.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-3 py-1 bg-blue-600/20 text-blue-400 text-sm rounded-full border border-blue-600/30"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTag(tag)}
+                      className="ml-2 text-blue-400 hover:text-blue-300"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
               </div>
-              <div>
-                <span className="text-gray-400">字数：</span>
-                <span className="text-white ml-2">{article.content.length}</span>
+              <input
+                type="text"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleAddTag}
+                placeholder="添加标签..."
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* 编辑器 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">
+                文章内容
+              </label>
+              <div className="bg-gray-700 rounded-xl border border-gray-600 overflow-hidden">
+                <Editor
+                  content={article.content}
+                  onChange={handleContentChange}
+                  placeholder="开始写作你的文章..."
+                />
               </div>
-              <div>
-                <span className="text-gray-400">标签：</span>
-                <span className="text-white ml-2">
-                  {article.tags.length > 0 ? article.tags.join(', ') : '无'}
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-400">摘要：</span>
-                <span className="text-white ml-2">{article.excerpt || '暂无'}</span>
+            </div>
+
+            {/* 文章信息预览 */}
+            <div className="bg-gray-700 rounded-xl p-6 border border-gray-600">
+              <h3 className="text-lg font-semibold text-white mb-4">文章信息</h3>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <span className="text-gray-400">标题：</span>
+                  <span className="text-white ml-2">{article.title || '未填写'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">字数：</span>
+                  <span className="text-white ml-2">{article.content.length}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">标签：</span>
+                  <span className="text-white ml-2">
+                    {article.tags.length > 0 ? article.tags.join(', ') : '无'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-400">摘要：</span>
+                  <span className="text-white ml-2">{article.excerpt || '暂无'}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

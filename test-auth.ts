@@ -1,0 +1,32 @@
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+async function test() {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: 'x203458454@gmail.com' }
+    });
+    
+    console.log('User found:', user ? 'Yes' : 'No');
+    if (user) {
+      console.log('User email:', user.email);
+      console.log('Password hash exists:', !!user.password);
+      console.log('Password hash length:', user.password?.length || 0);
+      
+      // Test password comparison
+      const testPassword = 'abcdefg123';
+      if (user.password) {
+        const isValid = await bcrypt.compare(testPassword, user.password);
+        console.log('Password test result:', isValid);
+      }
+    }
+    
+    await prisma.$disconnect();
+  } catch (error) {
+    console.error('Database test failed:', error);
+  }
+}
+
+test();

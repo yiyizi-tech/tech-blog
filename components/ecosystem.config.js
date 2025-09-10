@@ -4,7 +4,7 @@ module.exports = {
     script: 'npm',
     args: 'start',
     cwd: '/opt/tech-blog',
-    instances: 1,
+    instances: 'max',
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'production',
@@ -16,7 +16,7 @@ module.exports = {
     time: true,
     autorestart: true,
     watch: false,
-    max_memory_restart: '2G',
+    max_memory_restart: '1G',
     min_uptime: '10s',
     max_restarts: 5
   }]
