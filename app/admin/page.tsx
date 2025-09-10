@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation';
+import AdminDashboard from '@/components/admin/AdminDashboard';
 
 export default function AdminPage() {
-  // 重定向到dashboard页面
-  redirect('/admin/dashboard');
+  return <AdminDashboard />;
 }
