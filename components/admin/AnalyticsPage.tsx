@@ -14,7 +14,7 @@ import {
   Download,
   RefreshCw
 } from 'lucide-react';
-import AdminLayout from './AdminLayout';
+// 移除重复的AdminLayout导入
 import { 
   BarChart, 
   Bar, 
@@ -106,7 +106,7 @@ export default function AnalyticsPage() {
     value: string | number;
     change?: string;
     icon: any;
-    color?: string;
+    color?: 'blue' | 'green' | 'purple' | 'orange';
   }) => {
     const colorClasses = {
       blue: 'bg-blue-500',
@@ -116,11 +116,11 @@ export default function AnalyticsPage() {
     };
 
     return (
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-gray-800 rounded-lg shadow p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-gray-600">{title}</p>
-            <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+            <p className="text-3xl font-bold text-white mt-2">{value}</p>
             {change && (
               <p className="text-sm mt-2">
                 <span className="text-green-600">↑ {change}</span>
@@ -137,12 +137,11 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className="p-6">
+      <div>
         {/* 页面标题 */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">数据统计</h1>
+            <h1 className="text-2xl font-bold text-white">数据统计</h1>
             <p className="mt-2 text-gray-600">深入了解你的博客表现和用户行为</p>
           </div>
           
@@ -164,7 +163,7 @@ export default function AnalyticsPage() {
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-800 hover:bg-gray-50 disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
               刷新
@@ -211,9 +210,9 @@ export default function AnalyticsPage() {
 
         {/* 流量趋势 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">流量趋势</h2>
+              <h2 className="text-lg font-semibold text-white">流量趋势</h2>
               <BarChart3 className="h-5 w-5 text-gray-400" />
             </div>
             <div className="h-80">
@@ -232,9 +231,9 @@ export default function AnalyticsPage() {
           </div>
 
           {/* 设备分布 */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">设备分布</h2>
+              <h2 className="text-lg font-semibold text-white">设备分布</h2>
             </div>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -246,7 +245,7 @@ export default function AnalyticsPage() {
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
                     {deviceData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -259,9 +258,9 @@ export default function AnalyticsPage() {
           </div>
 
           {/* 浏览器分布 */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">浏览器分布</h2>
+              <h2 className="text-lg font-semibold text-white">浏览器分布</h2>
             </div>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -273,7 +272,7 @@ export default function AnalyticsPage() {
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
                     {browserData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -286,9 +285,9 @@ export default function AnalyticsPage() {
           </div>
 
           {/* 访问时间分布 */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">24小时访问分布</h2>
+              <h2 className="text-lg font-semibold text-white">24小时访问分布</h2>
               <Clock className="h-5 w-5 text-gray-400" />
             </div>
             <div className="h-80">
@@ -306,9 +305,9 @@ export default function AnalyticsPage() {
         </div>
 
         {/* 热门文章 */}
-        <div className="bg-white rounded-lg shadow mb-8">
+        <div className="bg-gray-800 rounded-lg shadow mb-8">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">热门文章排行</h2>
+            <h2 className="text-lg font-semibold text-white">热门文章排行</h2>
           </div>
           <div className="p-6">
             <div className="overflow-x-auto">
@@ -332,28 +331,28 @@ export default function AnalyticsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-gray-800 divide-y divide-gray-200">
                   {popularPosts.map((post, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-white">
                           {post.title}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center text-sm text-gray-900">
+                        <div className="flex items-center text-sm text-white">
                           <Eye className="w-4 h-4 mr-1" />
                           {post.views.toLocaleString()}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center text-sm text-gray-900">
+                        <div className="flex items-center text-sm text-white">
                           <MessageSquare className="w-4 h-4 mr-1" />
                           {post.comments}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center text-sm text-gray-900">
+                        <div className="flex items-center text-sm text-white">
                           <Share2 className="w-4 h-4 mr-1" />
                           {post.shares}
                         </div>
@@ -370,9 +369,9 @@ export default function AnalyticsPage() {
         </div>
 
         {/* 实时活动 */}
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-gray-800 rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">实时活动</h2>
+            <h2 className="text-lg font-semibold text-white">实时活动</h2>
           </div>
           <div className="p-6">
             <div className="space-y-4">
@@ -380,7 +379,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">新访客</p>
+                    <p className="text-sm font-medium text-white">新访客</p>
                     <p className="text-xs text-gray-500">来自北京的用户访问了首页</p>
                   </div>
                 </div>
@@ -391,7 +390,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">文章阅读</p>
+                    <p className="text-sm font-medium text-white">文章阅读</p>
                     <p className="text-xs text-gray-500">用户正在阅读 Next.js 15 完整指南</p>
                   </div>
                 </div>
@@ -402,7 +401,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">新评论</p>
+                    <p className="text-sm font-medium text-white">新评论</p>
                     <p className="text-xs text-gray-500">TypeScript 文章收到了新评论</p>
                   </div>
                 </div>
@@ -412,6 +411,5 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
-    </AdminLayout>
   );
 }

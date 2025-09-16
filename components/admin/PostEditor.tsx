@@ -15,7 +15,6 @@ import {
   ChevronLeft,
   AlertCircle
 } from 'lucide-react';
-import AdminLayout from './AdminLayout';
 import Editor from '../Editor';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
@@ -172,20 +171,19 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
   };
 
   return (
-    <AdminLayout>
-      <div className="p-6">
+    <div>
         {/* 顶部操作栏 */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => router.back()}
-              className="flex items-center text-gray-600 hover:text-gray-900"
+              className="flex items-center text-gray-600 hover:text-white"
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
               返回
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white">
                 {articleId ? '编辑文章' : '新建文章'}
               </h1>
               <p className="text-gray-600 mt-1">
@@ -198,7 +196,7 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             <button
               onClick={() => handleSave('draft')}
               disabled={isSaving}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-800 hover:bg-gray-50 disabled:opacity-50"
             >
               <Save className="w-4 h-4 mr-2" />
               保存草稿
@@ -215,7 +213,7 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             
             <button
               onClick={handlePreview}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-800 hover:bg-gray-50"
             >
               <Eye className="w-4 h-4 mr-2" />
               预览
@@ -245,7 +243,7 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
           {/* 主要编辑区域 */}
           <div className="lg:col-span-2 space-y-6">
             {/* 标题输入 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   文章标题
@@ -273,7 +271,7 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             </div>
 
             {/* 内容编辑器 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   文章内容
@@ -306,9 +304,9 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
           {/* 侧边栏设置 */}
           <div className="space-y-6">
             {/* 发布设置 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                <h3 className="text-lg font-medium text-white flex items-center">
                   <Calendar className="w-5 h-5 mr-2" />
                   发布设置
                 </h3>
@@ -356,9 +354,9 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             </div>
 
             {/* 文章摘要 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                <h3 className="text-lg font-medium text-white flex items-center">
                   <FileText className="w-5 h-5 mr-2" />
                   文章摘要
                 </h3>
@@ -389,9 +387,9 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             </div>
 
             {/* 标签管理 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                <h3 className="text-lg font-medium text-white flex items-center">
                   <Tag className="w-5 h-5 mr-2" />
                   标签
                 </h3>
@@ -441,9 +439,9 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             </div>
 
             {/* 文章信息 */}
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-gray-800 rounded-lg shadow">
               <div className="p-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                <h3 className="text-lg font-medium text-white flex items-center">
                   <Clock className="w-5 h-5 mr-2" />
                   文章信息
                 </h3>
@@ -471,7 +469,6 @@ export default function PostEditor({ articleId, initialData }: PostEditorProps) 
             </div>
           </div>
         </div>
-      </div>
-    </AdminLayout>
+    </div>
   );
 }

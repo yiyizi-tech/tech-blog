@@ -20,7 +20,9 @@ import {
   ToggleLeft,
   ToggleRight
 } from 'lucide-react';
-import AdminLayout from './AdminLayout';
+import { AlertModal, ConfirmModal } from '../Modal';
+import { useModal } from '../../hooks/useModal';
+// 移除重复的AdminLayout导入
 
 interface SiteSettings {
   siteName: string;
@@ -71,6 +73,7 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<'general' | 'seo' | 'social' | 'appearance' | 'advanced'>('general');
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const modal = useModal();
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -83,8 +86,9 @@ export default function SettingsPage() {
     }, 1000);
   };
 
-  const handleReset = () => {
-    if (confirm('确定要重置所有设置吗？此操作不可恢复。')) {
+  const handleReset = async () => {
+    const confirmed = await modal.confirm('确定要重置所有设置吗？此操作不可恢复。', '重置设置');
+    if (confirmed) {
       setSettings(defaultSettings);
     }
   };
@@ -108,9 +112,9 @@ export default function SettingsPage() {
         try {
           const imported = JSON.parse(e.target?.result as string);
           setSettings({ ...defaultSettings, ...imported });
-          alert('设置导入成功！');
+          modal.success('成功', '设置导入成功！');
         } catch (error) {
-          alert('设置文件格式错误！');
+          modal.error('导入失败', '设置文件格式错误！');
         }
       };
       reader.readAsText(file);
@@ -123,10 +127,10 @@ export default function SettingsPage() {
     label: string;
   }) => (
     <div className="flex items-center justify-between">
-      <span className="text-sm font-medium text-gray-700">{label}</span>
+      <span className="text-sm font-medium text-gray-200">{label}</span>
       <button
         onClick={() => onChange(!enabled)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
           enabled ? 'bg-blue-600' : 'bg-gray-200'
         }`}
       >
@@ -144,9 +148,9 @@ export default function SettingsPage() {
     icon: any;
     children: React.ReactNode;
   }) => (
-    <div className="bg-white rounded-lg shadow mb-6">
+    <div className="bg-gray-800 rounded-lg shadow mb-6">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+        <h3 className="text-lg font-semibold text-white flex items-center">
           <Icon className="w-5 h-5 mr-2" />
           {title}
         </h3>
@@ -158,25 +162,24 @@ export default function SettingsPage() {
   );
 
   return (
-    <AdminLayout>
-      <div className="p-6">
+    <div>
         {/* 页面标题 */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">系统设置</h1>
-            <p className="mt-2 text-gray-600">配置你的博客设置和偏好</p>
+            <h1 className="text-2xl font-bold text-white">系统设置</h1>
+            <p className="mt-2 text-gray-300">配置你的博客设置和偏好</p>
           </div>
           
           <div className="flex items-center space-x-3">
             <button
               onClick={handleExport}
-              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-200 bg-gray-800 hover:bg-gray-50 cursor-pointer"
             >
               <Download className="w-4 h-4 mr-2" />
               导出设置
             </button>
             
-            <label className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
+            <label className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-200 bg-gray-800 hover:bg-gray-50 cursor-pointer">
               <Upload className="w-4 h-4 mr-2" />
               导入设置
               <input type="file" accept=".json" onChange={handleImport} className="hidden" />
@@ -184,7 +187,7 @@ export default function SettingsPage() {
             
             <button
               onClick={handleReset}
-              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50"
+              className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-red-700 bg-gray-800 hover:bg-red-50 cursor-pointer"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               重置
@@ -193,7 +196,7 @@ export default function SettingsPage() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
             >
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? '保存中...' : '保存设置'}
@@ -232,10 +235,10 @@ export default function SettingsPage() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key as any)}
-                className={`flex items-center py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center py-2 px-1 border-b-2 font-medium text-sm cursor-pointer ${
                   activeTab === key
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 hover:text-gray-200 hover:border-gray-300'
                 }`}
               >
                 <Icon className="w-4 h-4 mr-2" />
@@ -251,7 +254,7 @@ export default function SettingsPage() {
             <SettingGroup title="站点信息" icon={Globe}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     站点名称
                   </label>
                   <input
@@ -263,7 +266,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     站点URL
                   </label>
                   <input
@@ -275,7 +278,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     站点描述
                   </label>
                   <textarea
@@ -291,7 +294,7 @@ export default function SettingsPage() {
             <SettingGroup title="作者信息" icon={User}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     作者姓名
                   </label>
                   <input
@@ -303,7 +306,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     作者邮箱
                   </label>
                   <input
@@ -319,7 +322,7 @@ export default function SettingsPage() {
             <SettingGroup title="文章设置" icon={Database}>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     每页显示文章数
                   </label>
                   <input
@@ -353,7 +356,7 @@ export default function SettingsPage() {
             <SettingGroup title="SEO设置" icon={Globe}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     SEO标题
                   </label>
                   <input
@@ -365,7 +368,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     主题色
                   </label>
                   <input
@@ -377,7 +380,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     SEO描述
                   </label>
                   <textarea
@@ -389,7 +392,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     SEO关键词
                   </label>
                   <input
@@ -410,7 +413,7 @@ export default function SettingsPage() {
             <SettingGroup title="社交媒体" icon={User}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     Twitter
                   </label>
                   <input
@@ -423,7 +426,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     GitHub
                   </label>
                   <input
@@ -436,7 +439,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     LinkedIn
                   </label>
                   <input
@@ -463,7 +466,7 @@ export default function SettingsPage() {
                 />
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     主题色
                   </label>
                   <div className="flex items-center space-x-4">
@@ -493,7 +496,7 @@ export default function SettingsPage() {
                 
                 {settings.analyticsEnabled && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Google Analytics ID
                     </label>
                     <input
@@ -537,7 +540,26 @@ export default function SettingsPage() {
             </SettingGroup>
           </div>
         )}
-      </div>
-    </AdminLayout>
+        
+        {/* 模态框 */}
+        <AlertModal
+          isOpen={modal.alertModal.isOpen}
+          onClose={modal.closeAlert}
+          type={modal.alertModal.options?.type || 'info'}
+          title={modal.alertModal.options?.title || ''}
+          message={modal.alertModal.options?.message || ''}
+        />
+        
+        <ConfirmModal
+          isOpen={modal.confirmModal.isOpen}
+          onClose={() => modal.closeConfirm(false)}
+          onConfirm={() => modal.closeConfirm(true)}
+          title={modal.confirmModal.options?.title || ''}
+          message={modal.confirmModal.options?.message || ''}
+          confirmText={modal.confirmModal.options?.confirmText}
+          cancelText={modal.confirmModal.options?.cancelText}
+          type={modal.confirmModal.options?.type}
+        />
+    </div>
   );
 }

@@ -1,5 +1,17 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { RSSButton } from "./RSSSubscription";
+import { ShareButtonSimple } from "./SocialShare";
+
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // 如果是admin页面，不显示底部
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-black text-white py-8 mt-auto">
@@ -11,7 +23,7 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex space-x-6">
+          <div className="flex items-center space-x-6">
             <a 
               href="/privacy" 
               className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
@@ -24,12 +36,12 @@ export default function Footer() {
             >
               使用条款
             </a>
-            <a 
-              href="/rss.xml" 
-              className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-            >
-              RSS 订阅
-            </a>
+            <RSSButton />
+            <ShareButtonSimple 
+              url={`https://your-domain.com${pathname}`}
+              title="壹壹零壹Blog - 探索前沿技术，分享编程心得"
+              description="专注于现代Web开发技术的个人博客"
+            />
           </div>
         </div>
 

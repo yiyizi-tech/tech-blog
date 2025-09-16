@@ -31,10 +31,38 @@ function processInlineCode(content: string): string {
 
 function processHeaders(content: string): string {
   return content
-    .replace(/^# ([^\n]+)/gm, '<h1 class="text-4xl font-bold mt-8 mb-6 text-white">$1</h1>')
-    .replace(/^## ([^\n]+)/gm, '<h2 class="text-3xl font-bold mt-8 mb-6 text-white">$1</h2>')
-    .replace(/^### ([^\n]+)/gm, '<h3 class="text-2xl font-semibold mt-6 mb-4 text-white">$1</h3>')
-    .replace(/^#### ([^\n]+)/gm, '<h4 class="text-xl font-semibold mt-5 mb-3 text-white">$1</h4>');
+    .replace(/^# ([^\n]+)/gm, (match, title) => {
+      const id = title.toLowerCase()
+        .replace(/[^\w\s\u4e00-\u9fff-]/g, '') // 保留中文字符
+        .replace(/\s+/g, '-') // 空格替换为连字符
+        .replace(/-+/g, '-') // 多个连字符合并为一个
+        .trim();
+      return `<h1 id="${id}" class="text-4xl font-bold mt-8 mb-6 text-white scroll-mt-20">${title}</h1>`;
+    })
+    .replace(/^## ([^\n]+)/gm, (match, title) => {
+      const id = title.toLowerCase()
+        .replace(/[^\w\s\u4e00-\u9fff-]/g, '') // 保留中文字符
+        .replace(/\s+/g, '-') // 空格替换为连字符
+        .replace(/-+/g, '-') // 多个连字符合并为一个
+        .trim();
+      return `<h2 id="${id}" class="text-3xl font-bold mt-8 mb-6 text-white scroll-mt-20">${title}</h2>`;
+    })
+    .replace(/^### ([^\n]+)/gm, (match, title) => {
+      const id = title.toLowerCase()
+        .replace(/[^\w\s\u4e00-\u9fff-]/g, '') // 保留中文字符
+        .replace(/\s+/g, '-') // 空格替换为连字符
+        .replace(/-+/g, '-') // 多个连字符合并为一个
+        .trim();
+      return `<h3 id="${id}" class="text-2xl font-semibold mt-6 mb-4 text-white scroll-mt-20">${title}</h3>`;
+    })
+    .replace(/^#### ([^\n]+)/gm, (match, title) => {
+      const id = title.toLowerCase()
+        .replace(/[^\w\s\u4e00-\u9fff-]/g, '') // 保留中文字符
+        .replace(/\s+/g, '-') // 空格替换为连字符
+        .replace(/-+/g, '-') // 多个连字符合并为一个
+        .trim();
+      return `<h4 id="${id}" class="text-xl font-semibold mt-5 mb-3 text-white scroll-mt-20">${title}</h4>`;
+    });
 }
 
 function processLists(content: string): string {

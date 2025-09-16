@@ -14,7 +14,7 @@ import { Image as TiptapImage } from '@tiptap/extension-image';
 import { createLowlight } from 'lowlight';
 
 const lowlight = createLowlight();
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { 
   Bold, 
   Italic, 
@@ -35,6 +35,9 @@ import {
   Save,
   Eye
 } from 'lucide-react';
+import { AlertModal, ConfirmModal, PromptModal } from './Modal';
+import ImageUploadModal from './ImageUploadModal';
+import { useModal } from '../hooks/useModal';
 
 interface EditorProps {
   content: string;
@@ -54,6 +57,8 @@ const MenuBar = ({ editor, onSave, onPreview, readonly }: {
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const modal = useModal();
 
   const addLink = () => {
     if (linkUrl && editor) {
@@ -83,7 +88,7 @@ const MenuBar = ({ editor, onSave, onPreview, readonly }: {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-3 border-b border-white/10 bg-black/20">
+    <div className="flex flex-wrap items-center gap-1 p-3 border-b border-gray-700 bg-gray-800">
       {/* 撤销/重做 */}
       <button
         onClick={() => editor.chain().focus().undo().run()}
@@ -248,15 +253,9 @@ const MenuBar = ({ editor, onSave, onPreview, readonly }: {
 
       {/* 图片 */}
       <button
-        onClick={() => {
-          const url = prompt('输入图片地址:');
-          const alt = prompt('输入图片描述 (可选):') || '';
-          if (url) {
-            editor.chain().focus().setImage({ src: url, alt }).run();
-          }
-        }}
+        onClick={() => setShowImageModal(true)}
         disabled={readonly}
-        className="p-2 rounded hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-gray-300 hover:text-white"
+        className="p-2 rounded hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-gray-300 hover:text-white cursor-pointer"
         title="插入图片"
       >
         <Image className="w-4 h-4" />
@@ -287,11 +286,53 @@ const MenuBar = ({ editor, onSave, onPreview, readonly }: {
 
       <button
         onClick={toggleFullscreen}
-        className="p-2 rounded hover:bg-purple-600/20 text-purple-400 hover:text-purple-300"
+        className="p-2 rounded hover:bg-purple-600/20 text-purple-400 hover:text-purple-300 cursor-pointer"
         title={isFullscreen ? "退出全屏" : "全屏编辑"}
       >
         {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
       </button>
+      
+      {/* 图片上传模态框 */}
+      <ImageUploadModal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        onInsertImage={(src, alt) => {
+          if (editor) {
+            editor.chain().focus().setImage({ src, alt }).run();
+          }
+        }}
+      />
+      
+      {/* 其他模态框 */}
+      <AlertModal
+        isOpen={modal.alertModal.isOpen}
+        onClose={modal.closeAlert}
+        type={modal.alertModal.options?.type || 'info'}
+        title={modal.alertModal.options?.title || ''}
+        message={modal.alertModal.options?.message || ''}
+      />
+      
+      <ConfirmModal
+        isOpen={modal.confirmModal.isOpen}
+        onClose={() => modal.closeConfirm(false)}
+        onConfirm={() => modal.closeConfirm(true)}
+        title={modal.confirmModal.options?.title || ''}
+        message={modal.confirmModal.options?.message || ''}
+        confirmText={modal.confirmModal.options?.confirmText}
+        cancelText={modal.confirmModal.options?.cancelText}
+        type={modal.confirmModal.options?.type}
+      />
+      
+      <PromptModal
+        isOpen={modal.promptModal.isOpen}
+        onClose={() => modal.closePrompt(null)}
+        onConfirm={(value) => modal.closePrompt(value)}
+        title={modal.promptModal.options?.title || ''}
+        message={modal.promptModal.options?.message || ''}
+        placeholder={modal.promptModal.options?.placeholder}
+        defaultValue={modal.promptModal.options?.defaultValue}
+        inputType={modal.promptModal.options?.inputType}
+      />
     </div>
   );
 };
@@ -334,10 +375,18 @@ export default function Editor({ content, onChange, placeholder = '开始写作.
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-invert max-w-none focus:outline-none min-h-[400px] p-4',
+        class: 'prose prose-invert max-w-none focus:outline-none p-4',
       },
     },
+    immediatelyRender: false,
   });
+
+  // 监听content变化并更新编辑器内容
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   return (
     <div className={`editor-container ${readonly ? 'opacity-75' : ''}`}>
@@ -347,7 +396,9 @@ export default function Editor({ content, onChange, placeholder = '开始写作.
         onPreview={onPreview}
         readonly={readonly}
       />
-      <EditorContent editor={editor} className="editor-content" />
+      <div className="editor-content-wrapper max-h-[500px] overflow-y-auto border border-gray-700 rounded-b bg-gray-900">
+        <EditorContent editor={editor} className="editor-content" />
+      </div>
       
       {/* 编辑器样式 */}
       <style jsx global>{`
@@ -355,8 +406,11 @@ export default function Editor({ content, onChange, placeholder = '开始写作.
           outline: none;
           padding: 1rem;
           min-height: 400px;
+          max-height: none;
           font-size: 16px;
           line-height: 1.6;
+          color: #ffffff;
+          background-color: #111827;
         }
 
         .ProseMirror p {

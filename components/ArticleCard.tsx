@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import LazyImage from "./LazyImage";
 
 interface ArticleCardProps {
   id: string;
@@ -34,11 +34,11 @@ export default function ArticleCard({
   const selectedGradient = gradients[gradientIndex];
 
   return (
-    <article className="group bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl">
+    <article className="group bg-gray-800 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden hover:border-gray-600 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl h-full flex flex-col">
       {/* Cover Image */}
       <div className={`relative h-48 overflow-hidden bg-gradient-to-br ${selectedGradient}`}>
-        {coverImage && !coverImage.includes('placeholder') ? (
-          <Image
+        {coverImage && coverImage.trim() !== '' ? (
+          <LazyImage
             src={coverImage}
             alt={title}
             fill
@@ -63,7 +63,7 @@ export default function ArticleCard({
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex-1 flex flex-col">
         {/* Meta Info */}
         <div className="flex items-center justify-between mb-3 text-sm">
           <time className="text-gray-400 flex items-center">
@@ -85,14 +85,14 @@ export default function ArticleCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors leading-tight">
-          <Link href={`/posts/${id}`} className="line-clamp-2 text-white hover:text-blue-400 hover:underline">
+        <h3 className="text-xl font-semibold mb-3 leading-tight">
+          <Link href={`/posts/${id}`} className="line-clamp-2 text-gray-100 hover:text-blue-300 transition-colors duration-200">
             {title}
           </Link>
         </h3>
 
         {/* Excerpt */}
-        <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed text-sm">
+        <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed text-sm flex-1">
           {excerpt}
         </p>
 
@@ -114,15 +114,17 @@ export default function ArticleCard({
         </div>
 
         {/* Read More Link */}
-        <Link 
-          href={`/posts/${id}`} 
-          className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors group-hover:translate-x-1 transition-transform text-sm"
-        >
-          阅读更多
-          <svg className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </Link>
+        <div className="mt-auto">
+          <Link 
+            href={`/posts/${id}`} 
+            className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors group-hover:translate-x-1 transition-transform text-sm"
+          >
+            阅读更多
+            <svg className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </article>
   );
