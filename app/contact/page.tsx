@@ -179,7 +179,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">邮箱</h3>
-                    <p className="text-gray-300">x203458454@gmail.com</p>
+                    <p className="text-gray-300">contact@example.com</p>
                   </div>
                 </div>
 

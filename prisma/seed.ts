@@ -8,31 +8,18 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash('abcdefg123', 10)
   
-  // 创建yiyizi.top域名的管理员用户
-  const admin1 = await prisma.user.upsert({
-    where: { email: 'admin@yiyizi.top' },
+  // 创建管理员用户
+  const admin = await prisma.user.upsert({
+    where: { email: 'admin@example.com' },
     update: {},
     create: {
-      email: 'admin@yiyizi.top',
+      email: 'admin@example.com',
       name: 'Admin',
       password: hashedPassword,
     },
   })
 
-  console.log('Admin user (admin@yiyizi.top) created:', admin1)
-  
-  // 保留原有的gmail用户（如果需要）
-  const admin2 = await prisma.user.upsert({
-    where: { email: 'x203458454@gmail.com' },
-    update: {},
-    create: {
-      email: 'x203458454@gmail.com',
-      name: 'Admin',
-      password: hashedPassword,
-    },
-  })
-
-  console.log('Admin user (x203458454@gmail.com) created:', admin2)
+  console.log('Admin user created:', admin)
 
   // 创建示例文章
   const posts = [

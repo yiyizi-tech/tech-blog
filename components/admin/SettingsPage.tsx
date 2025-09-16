@@ -51,7 +51,7 @@ const defaultSettings: SiteSettings = {
   siteDescription: '徐梁的个人技术博客，分享最新的技术洞察和实用教程',
   siteUrl: 'https://yiyizi.top',
   authorName: 'Xu Liang',
-  authorEmail: 'x203458454@gmail.com',
+  authorEmail: 'admin@example.com',
   postsPerPage: 10,
   commentsEnabled: true,
   commentsModeration: true,
